@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "./App.css";
+import { adduser } from "./features/userSlice";
+import { RootState } from "./store/store";
 
 function App() {
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const user = useSelector((store: RootState) => store.user);
+  const onClick = async () => {
+    await dispatch(adduser(name));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input value={name} onChange={(e) => setName(e.target.value)} />
+
+      <button onClick={onClick}>Add To Store</button>
+
+      {user && user.map((val: any) => <h1>{val}</h1>)}
     </div>
   );
 }
